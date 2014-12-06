@@ -1,6 +1,7 @@
 #include "OCLWrapper.h"
 #include <vector>
 #include <iostream>
+#include <ctime>
 	
 	OCLWrapper::OCLWrapper()
 	{
@@ -117,12 +118,12 @@
 		for (int i = 0; i < 3; i++)
 		{
 			cl_event event;
+			unsigned int start = clock();
 			clEnqueueNDRangeKernel(queue, kern, 1, NULL, &gsize, &lsize, 0, NULL, &event);
 			clFinish(queue);
-			clGetEventProfilingInfo(event, CL_PROFILING_COMMAND_START, sizeof(start), &start, NULL);
-			clGetEventProfilingInfo(event, CL_PROFILING_COMMAND_END, sizeof(end), &end, NULL);
-			cl_ulong elapsed = end - start;
-			std::cout << "took:" << elapsed << "ns" << "| gs:"<<arrSize<<" ls:"<<lsize<< std::endl;
+			//clGetEventProfilingInfo(event, CL_PROFILING_COMMAND_START, sizeof(start), &start, NULL);
+			//clGetEventProfilingInfo(event, CL_PROFILING_COMMAND_END, sizeof(end), &end, NULL);
+			std::cout << "took:" << clock()-start << "ms" << "| gs:"<<arrSize<<" ls:"<<lsize<< std::endl;
 		}
 		return c;
 	}
